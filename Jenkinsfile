@@ -1,106 +1,68 @@
 pipeline {
   agent none
   stages {
-    stage('Build tool') {
+    stage('Build') {
       parallel {
-        stage('Maven') {
-          stage('Build') {
-            agent {
-              node {
-                label 'linux'
-              }
-            }
-            tools {
-              jdk 'Java 8'
-              maven 'Maven 3.3.9'
-            }
-            steps {
-              echo 'Building ...'
-              sh 'mvn package'
+        stage('Gradle') {
+          agent {
+            node {
+              label 'linux'
             }
           }
-          stage('QA') {
-            parallel {
-              stage('IT 1') {
-                agent {
-                  node {
-                    label 'linux'
-                  }
-                }
-                tools {
-                  jdk 'Java 8'
-                  maven 'Maven 3.3.9'
-                }
-                steps {
-                  echo 'Running IT 1 ...'
-                  sh 'mvn test'
-                }
-              }
-              stage('IT 2') {
-                agent {
-                  node {
-                    label 'linux'
-                  }
-                }
-                tools {
-                  jdk 'Java 8'
-                  maven 'Maven 3.3.9'
-                }
-                steps {
-                  echo 'Running IT 2 ...'
-                  sh 'mvn test'
-                }
-              }
-            }
+          tools {
+            jdk 'Java 8'
+          }
+          steps {
+            echo 'Building with Gradle...'
+            sh './gradlew build'
           }
         }
-        stage('Gradle') {
-          stage('Build') {
-            agent {
-              node {
-                label 'linux'
-              }
-            }
-            tools {
-              jdk 'Java 8'
-            }
-            steps {
-              echo 'Building ...'
-              sh 'gradlew build'
+        stage('Maven') {
+          agent {
+            node {
+              label 'linux'
             }
           }
-          stage('QA') {
-            parallel {
-              stage('IT 1') {
-                agent {
-                  node {
-                    label 'linux'
-                  }
-                }
-                tools {
-                  jdk 'Java 8'
-                }
-                steps {
-                  echo 'Running IT 1 ...'
-                  sh 'gradlew test'
-                }
-              }
-              stage('IT 2') {
-                agent {
-                  node {
-                    label 'linux'
-                  }
-                }
-                tools {
-                  jdk 'Java 8'
-                  maven 'Maven 3.3.9'
-                }
-                steps {
-                  echo 'Running IT 2 ...'
-                  sh 'gradlew test'
-                }
-              }
+          tools {
+            jdk 'Java 8'
+            maven 'Maven 3.3.9'
+          }
+          steps {
+            echo 'Building with Maven...'
+            sh 'mvn package'
+          }
+        }
+      }
+    }
+    stage('QA') {
+      parallel {
+        stage('Gradle') {
+          agent {
+            node {
+              label 'linux'
             }
+          }
+          tools {
+            jdk 'Java 8'
+          }
+          steps {
+            echo 'Running IT with Gradle ...'
+            sh './gradlew test'
+          }
+        }
+        stage('Maven') {
+          agent {
+            node {
+              label 'linux'
+            }
+          }
+          tools {
+            jdk 'Java 8'
+            maven 'Maven 3.3.9'
+          }
+          steps {
+            echo 'Running IT with Maven ...'
+            sh 'mvn test'
           }
         }
       }
