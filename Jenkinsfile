@@ -6,10 +6,14 @@ pipeline {
         node {
           label 'linux'
         }
-        
+      }
+      tools {
+        jdk 'Java 8'
+        maven 'Maven 3.3.9'
       }
       steps {
         echo 'Building ...'
+        sh 'mvn package'
       }
     }
     stage('QA') {
@@ -21,8 +25,13 @@ pipeline {
             }
             
           }
+          tools {
+            jdk 'Java 8'
+            maven 'Maven 3.3.9'
+          }
           steps {
             echo 'Running IT 1 ...'
+            sh 'mvn test'
           }
         }
         stage('IT 2') {
@@ -32,8 +41,13 @@ pipeline {
             }
             
           }
+          tools {
+            jdk 'Java 8'
+            maven 'Maven 3.3.9'
+          }
           steps {
             echo 'Running IT 2 ...'
+            sh 'mvn test'
           }
         }
       }
