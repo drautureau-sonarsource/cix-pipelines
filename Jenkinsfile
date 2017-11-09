@@ -2,51 +2,67 @@ pipeline {
   agent none
   stages {
     stage('Build') {
-      agent {
-        node {
-          label 'linux'
+      failFast true
+      parallel {
+        stage('Gradle') {
+          agent {
+            node {
+              label 'linux'
+            }
+          }
+          tools {
+            jdk 'Java 8'
+          }
+          steps {
+            echo 'Building with Gradle...'
+            sh './gradlew build'
+          }
         }
-      }
-      tools {
-        jdk 'Java 8'
-        maven 'Maven 3.3.9'
-      }
-      steps {
-        echo 'Building ...'
-        sh 'mvn package'
+        stage('Maven') {
+          agent {
+            node {
+              label 'linux'
+            }
+          }
+          tools {
+            jdk 'Java 8'
+            maven 'Maven 3.3.9'
+          }
+          steps {
+            echo 'Building with Maven...'
+            sh 'mvn package'
+          }
+        }
       }
     }
     stage('QA') {
       parallel {
-        stage('IT 1') {
+        stage('Gradle') {
           agent {
             node {
               label 'linux'
             }
-            
           }
           tools {
             jdk 'Java 8'
-            maven 'Maven 3.3.9'
           }
           steps {
-            echo 'Running IT 1 ...'
-            sh 'mvn test'
+            echo 'Running IT with Gradle ...'
+            sh './gradlew test'
           }
         }
-        stage('IT 2') {
+        stage('Maven') {
           agent {
             node {
               label 'linux'
             }
-            
           }
           tools {
             jdk 'Java 8'
             maven 'Maven 3.3.9'
           }
           steps {
-            echo 'Running IT 2 ...'
+            echo 'Running IT with Maven ...'
             sh 'mvn test'
           }
         }
