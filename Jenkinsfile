@@ -2,7 +2,11 @@ pipeline {
   agent none
   stages {
     stage('GitHub to BURGR') {
-      agent none
+      agent {
+        node {
+          label 'linux'
+        }
+      }
       steps {
         echo 'Simulate a notification to BURGR from GitHub (push, PRs, ...)'
         sh 'env'
