@@ -9,10 +9,12 @@ pipeline {
       }
       steps {
         echo 'Simulate a notification to BURGR from GitHub (push, PRs, ...)'
-        sh 'env'
+        sh '''ls
+           env'''
 /*for file in POST.commit.github/*.json
 do
 	curl -X POST  -d @$file --header Content-Type:application/agent --user-agent post.test.data.commit.payload/1.0.0 http://localhost:8080/api/commit/github;
+  HTTP_CODE=`curl --silent --output out.txt --write-out %{http_code} -X POST -d @$BURGR_FILE --header "Content-Type:application/json" $BURGR_URL/api/stage`
 done;
 {
   "ref": "refs/heads/myBranch",
@@ -35,6 +37,7 @@ done;
     ,"avatar_url" :"https://avatars.githubusercontent.com/u/666?v=3&s=48"
   }
 }
+
 */
       }
     }
