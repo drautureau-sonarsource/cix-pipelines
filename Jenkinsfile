@@ -2,8 +2,8 @@ pipeline {
   agent none
   stages {
     stage('Build') {
+      failFast true
       parallel {
-        failFast true
         stage('Gradle') {
           agent {
             node {
