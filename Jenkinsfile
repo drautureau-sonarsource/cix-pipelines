@@ -23,7 +23,6 @@ pipeline {
             node {
               label 'linux'
             }
-            
           }
           tools {
             jdk 'Java 8'
@@ -39,7 +38,6 @@ pipeline {
             node {
               label 'linux'
             }
-            
           }
           tools {
             jdk 'Java 8'
