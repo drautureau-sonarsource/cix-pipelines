@@ -1,9 +1,9 @@
 # Description
 Create a running multi-container Docker applications with
 * Jenkins available at <http://localhost:8080/> with 
-  * Maven tool configured
-  * Java tool configured
-* 2 slaves connected to Jenkins with Maven installed
+  * Maven tool configured (Install automatically from Apache)
+  * Java tool configured (using openjdk as a base image)
+* 2 slaves connected to Jenkins preconfigured using openjdk as a base image
 * BURGR available at <http://localhost:8090/>
 
 You need to have [Docker Compose](https://docs.docker.com/compose/) installed
