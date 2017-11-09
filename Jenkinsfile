@@ -104,6 +104,7 @@ pipeline {
           }
         }
       }
+    }
     stage('Promote') {
       steps {
         echo 'Promoting ...'
