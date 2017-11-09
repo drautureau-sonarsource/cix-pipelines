@@ -9,36 +9,10 @@ pipeline {
       }
       steps {
         echo 'Simulate a notification to BURGR from GitHub (push, PRs, ...)'
-        sh '''ls
-           env'''
-/*for file in POST.commit.github/*.json
-do
-	curl -X POST  -d @$file --header Content-Type:application/agent --user-agent post.test.data.commit.payload/1.0.0 http://localhost:8080/api/commit/github;
-  HTTP_CODE=`curl --silent --output out.txt --write-out %{http_code} -X POST -d @$BURGR_FILE --header "Content-Type:application/json" $BURGR_URL/api/stage`
-done;
-{
-  "ref": "refs/heads/myBranch",
-  "compare": "http://github.com/SonarSource/project2/commit/2F1FB1/compare",
-  "head_commit": {
-    "id": "2F1B1",
-    "message": "Commit message 2F1B1",
-    "timestamp": "2016-01-05T11:40:15-04:00",
-    "url": "https://github.com/SonarSource/project2/commit/2F1B1"
-  },
-  "repository": {
-    "owner": {
-      "name": "SonarSource"
-    },
-    "name" : "project2"
-    ,"url" : "http://github.com/SonarSource/project2"
-  },
-  "sender" : {
-    "login" : "harrypotter"
-    ,"avatar_url" :"https://avatars.githubusercontent.com/u/666?v=3&s=48"
-  }
-}
-
-*/
+        dir(path: 'burgr-notifications-files') {
+          sh './change-commit-burgr.sh'
+          sh 'curl -X POST  -d @commit-burgr.tmp --header Content-Type:application/agent --user-agent post.test.data.commit.payload/1.0.0 http://burgr:8090/api/commit/github'
+        }
       }
     }
     stage('Build') {

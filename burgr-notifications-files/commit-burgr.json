@@ -1,0 +1,21 @@
+{
+    "ref": "refs/heads/@@GIT_BRANCH@@",
+    "compare": "@@GIT_REPO_URL@@/commit/@@GIT_COMMIT@@/compare",
+    "head_commit": {
+      "id": "@@GIT_COMMIT@@",
+      "message": "Fake commit message for @@GIT_COMMIT@@",
+      "timestamp": "@@TIMESTAMP@@",
+      "url": "@@GIT_REPO_URL@@/commit/@@GIT_COMMIT@@"
+    },
+    "repository": {
+      "owner": {
+        "name": "@@GIT_OWNER@@"
+      },
+      "name" : "@@GIT_PROJECT@@"
+      ,"url" : "@@GIT_REPO_URL@@"
+    },
+    "sender" : {
+      "login" : "@@GIT_OWNER@@"
+      ,"avatar_url" :"https://www.google.fr/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwjutr6Zq7LXAhUrK8AKHQS5DgYQjRwIBw&url=http%3A%2F%2Fwww.planetecampus.com%2Factu%2F14602-homer-simpson-meilleur-personnage-de-fiction&psig=AOvVaw2IvALFqEJdXN5XJlVDwLHg&ust=1510345932332236"
+    }
+  }
