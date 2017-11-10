@@ -23,7 +23,6 @@ pipeline {
       }
       steps {
         dir(path: 'burgr-notifications-files') {
-          sh 'env'
           sh './change-step-burgr.sh Build build started'
           sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
         }
@@ -59,6 +58,32 @@ pipeline {
           steps {
             echo 'Building with Maven...'
             sh 'mvn package'
+          }
+        }
+      }
+      post {
+        success {
+          dir(path: 'burgr-notifications-files') {
+            sh './change-step-burgr.sh Build build passed'
+            sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+          }
+        }
+        failure {
+          dir(path: 'burgr-notifications-files') {
+            sh './change-step-burgr.sh Build build failed'
+            sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+          }
+        }
+        unstable {
+          dir(path: 'burgr-notifications-files') {
+            sh './change-step-burgr.sh Build build failed'
+            sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+          }
+        }
+        aborted {
+          dir(path: 'burgr-notifications-files') {
+            sh './change-step-burgr.sh Build build canceled'
+            sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
           }
         }
       }
