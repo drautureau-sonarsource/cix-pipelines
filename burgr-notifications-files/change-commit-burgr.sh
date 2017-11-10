@@ -10,7 +10,6 @@ git_repo_url=${GIT_URL%.git}
 tmp=${git_repo_url#https://}
 IFS='/'
 read -r -a array <<< "$tmp"
-
 unset IFS
 git_owner="${array[1]}"
 git_project="${array[2]}"

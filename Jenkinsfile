@@ -11,12 +11,19 @@ pipeline {
         echo 'Simulate a notification to BURGR from GitHub (push, PRs, ...)'
         dir(path: 'burgr-notifications-files') {
           sh './change-commit-burgr.sh'
-          sh 'curl -X POST  -d @commit-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/commit/github'
+          sh 'curl -X POST -d @commit-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/commit/github'
         }
       }
     }
     stage('Build') {
       failFast true
+      steps {
+        dir(path: 'burgr-notifications-files') {
+          sh 'env'
+          sh './change-step-burgr.sh started'
+          sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+        }
+      }
       parallel {
         stage('Gradle') {
           agent {
