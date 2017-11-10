@@ -66,8 +66,8 @@ pipeline {
         /* We definitivly need to avoid this verbose stuff and remove the requirement of a node */
         success {
           node('linux') {
-            checkout scm // To be able to get access to SCM environment variables
             dir(path: 'burgr-notifications-files') {
+              checkout scm // To be able to get access to SCM environment variables
               sh 'env'
               sh './change-step-burgr.sh Build build passed'
               sh 'cat step-burgr.tmp'
