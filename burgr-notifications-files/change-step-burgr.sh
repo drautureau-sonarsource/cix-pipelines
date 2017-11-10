@@ -8,6 +8,8 @@
 #STAGE_NAME=Build
 #BUILD_URL=http://localhost:8080/job/cix-pipelines/job/add-notifications-to-burgr/42/
 
+source git-variables.properties
+
 timestamp=$(date +%FT%T%:z)
 git_repo_url=${GIT_URL%.git}
 tmp=${git_repo_url#https://}

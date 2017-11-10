@@ -27,3 +27,7 @@ sed -i "s|@@TIMESTAMP@@|${timestamp}|g" commit-burgr.tmp
 sed -i "s|@@GIT_OWNER@@|${git_owner}|g" commit-burgr.tmp
 sed -i "s|@@GIT_OWNER@@|${git_owner}|g" commit-burgr.tmp
 sed -i "s|@@GIT_PROJECT@@|${git_project}|g" commit-burgr.tmp
+
+echo "GIT_URL=${GIT_URL}" > git-variables.properties
+echo "GIT_BRANCH=${GIT_BRANCH}" >> git-variables.properties
+echo "GIT_COMMIT=${GIT_COMMIT}" >> git-variables.properties

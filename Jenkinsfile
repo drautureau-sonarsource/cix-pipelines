@@ -12,6 +12,9 @@ pipeline {
         dir(path: 'burgr-notifications-files') {
           sh './change-commit-burgr.sh'
           sh 'curl -X POST -d @commit-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/commit/github'
+          // Used for Post section of other stages to notify BURGR (cannot get access to git variables)
+          sh 'cat git-variables.properties'
+          stash includes: 'git-variables.properties', name: 'Git variables for BURGR'
         }
       }
     }
@@ -67,8 +70,7 @@ pipeline {
         success {
           node('linux') {
             dir(path: 'burgr-notifications-files') {
-              checkout scm // To be able to get access to SCM environment variables
-              sh 'env'
+              unstash 'Git variables for BURGR'
               sh './change-step-burgr.sh Build build passed'
               sh 'cat step-burgr.tmp'
               sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
