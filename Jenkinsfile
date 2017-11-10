@@ -66,6 +66,7 @@ pipeline {
           node('linux') {
             dir(path: 'burgr-notifications-files') {
               sh './change-step-burgr.sh Build build passed'
+              sh 'cat step-burgr.tmp'
               sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
             }
           }
