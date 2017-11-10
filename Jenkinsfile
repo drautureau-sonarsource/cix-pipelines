@@ -30,11 +30,6 @@ pipeline {
     }
     stage('Build') {
       failFast true
-      agent {
-        node {
-          label 'linux'
-        }
-      }
       parallel {
         stage('Gradle') {
           agent {
@@ -67,6 +62,11 @@ pipeline {
         }
       }
       post {
+        agent {
+          node {
+            label 'linux'
+          }
+        }
         success {
           dir(path: 'burgr-notifications-files') {
             sh './change-step-burgr.sh Build build passed'
