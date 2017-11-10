@@ -19,9 +19,9 @@ pipeline {
       failFast true
       //steps {
         //dir(path: 'burgr-notifications-files') {
-          sh 'env'
-          sh './change-step-burgr.sh started'
-          sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+          //sh 'env'
+          //sh './change-step-burgr.sh started'
+          //sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
         //}
       //}
       parallel {
