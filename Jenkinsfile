@@ -30,6 +30,11 @@ pipeline {
     }
     stage('Build') {
       failFast true
+      agent {
+        node {
+          label 'linux'
+        }
+      }
       parallel {
         stage('Gradle') {
           agent {
