@@ -71,8 +71,7 @@ pipeline {
           node('linux') {
             dir(path: 'burgr-notifications-files') {
               unstash 'Git variables for BURGR'
-              sh './change-step-burgr.sh Build build passed'
-              sh 'cat step-burgr.tmp'
+              sh './change-step-burgr.sh BUILD build passed'
               sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
             }
           }
@@ -80,7 +79,8 @@ pipeline {
         failure {
           node('linux') {
             dir(path: 'burgr-notifications-files') {
-              sh './change-step-burgr.sh Build build failed'
+              unstash 'Git variables for BURGR'
+              sh './change-step-burgr.sh BUILD build failed'
               sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
             }
           }
@@ -88,7 +88,8 @@ pipeline {
         unstable {
           node('linux') {
             dir(path: 'burgr-notifications-files') {
-              sh './change-step-burgr.sh Build build failed'
+              unstash 'Git variables for BURGR'
+              sh './change-step-burgr.sh BUILD build failed'
               sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
             }
           }
@@ -96,7 +97,8 @@ pipeline {
         aborted {
           node('linux') {
             dir(path: 'burgr-notifications-files') {
-              sh './change-step-burgr.sh Build build canceled'
+              unstash 'Git variables for BURGR'
+              sh './change-step-burgr.sh BUILD build canceled'
               sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
             }
           }
@@ -136,6 +138,47 @@ pipeline {
           }
         }
       }
+      post {
+        /* START */
+        /* We definitivly need to avoid this verbose stuff and remove the requirement of a node */
+        success {
+          node('linux') {
+            dir(path: 'burgr-notifications-files') {
+              unstash 'Git variables for BURGR'
+              sh './change-step-burgr.sh QA qa passed'
+              sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+            }
+          }
+        }
+        failure {
+          node('linux') {
+            dir(path: 'burgr-notifications-files') {
+              unstash 'Git variables for BURGR'
+              sh './change-step-burgr.sh QA qa failed'
+              sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+            }
+          }
+        }
+        unstable {
+          node('linux') {
+            dir(path: 'burgr-notifications-files') {
+              unstash 'Git variables for BURGR'
+              sh './change-step-burgr.sh QA qa failed'
+              sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+            }
+          }
+        }
+        aborted {
+          node('linux') {
+            dir(path: 'burgr-notifications-files') {
+              unstash 'Git variables for BURGR'
+              sh './change-step-burgr.sh QA qa canceled'
+              sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+            }
+          }
+        }
+      }
+      /* END */
     }
     stage('Promote') {
       steps {
