@@ -62,13 +62,17 @@ pipeline {
         }
       }
       post {
+        /* START */
+        /* We definitivly need to avoid this verbose stuff and remove the requirement of a node */
         success {
-          node('linux') {
-            dir(path: 'burgr-notifications-files') {
-              sh 'env'
-              sh './change-step-burgr.sh Build build passed'
-              sh 'cat step-burgr.tmp'
-              sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+          agent {
+            node('linux') {
+              dir(path: 'burgr-notifications-files') {
+                sh 'env'
+                sh './change-step-burgr.sh Build build passed'
+                sh 'cat step-burgr.tmp'
+                sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+              }
             }
           }
         }
@@ -97,6 +101,7 @@ pipeline {
           }
         }
       }
+      /* END */
     }
     stage('QA') {
       parallel {
