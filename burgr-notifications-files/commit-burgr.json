@@ -1,0 +1,21 @@
+{
+  "ref": "refs/heads/@@GIT_BRANCH@@",
+  "compare": "@@GIT_REPO_URL@@/commit/@@GIT_COMMIT@@/compare",
+  "head_commit": {
+    "id": "@@GIT_COMMIT@@",
+    "message": "Fake commit message for @@GIT_COMMIT@@",
+    "timestamp": "@@TIMESTAMP@@",
+    "url": "@@GIT_REPO_URL@@/commit/@@GIT_COMMIT@@"
+  },
+  "repository": {
+    "owner": {
+      "name": "@@GIT_OWNER@@"
+    },
+    "name": "@@GIT_PROJECT@@",
+    "url": "@@GIT_REPO_URL@@"
+  },
+  "sender": {
+    "login": "@@GIT_OWNER@@",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19146731?v=4"
+  }
+}
