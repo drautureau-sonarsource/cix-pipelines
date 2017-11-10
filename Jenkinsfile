@@ -62,30 +62,45 @@ pipeline {
         }
       }
       post {
-        agent {
-          node {
-            label 'linux'
-          }
-        }
         success {
+          agent {
+            node {
+              label 'linux'
+            }
+          }
           dir(path: 'burgr-notifications-files') {
             sh './change-step-burgr.sh Build build passed'
             sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
           }
         }
         failure {
+          agent {
+            node {
+              label 'linux'
+            }
+          }
           dir(path: 'burgr-notifications-files') {
             sh './change-step-burgr.sh Build build failed'
             sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
           }
         }
         unstable {
+          agent {
+            node {
+              label 'linux'
+            }
+          }
           dir(path: 'burgr-notifications-files') {
             sh './change-step-burgr.sh Build build failed'
             sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
           }
         }
         aborted {
+          agent {
+            node {
+              label 'linux'
+            }
+          }
           dir(path: 'burgr-notifications-files') {
             sh './change-step-burgr.sh Build build canceled'
             sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
