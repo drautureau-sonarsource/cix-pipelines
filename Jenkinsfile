@@ -18,6 +18,8 @@ pipeline {
         }
       }
     }
+    /* START */
+    /* Must not be in a dedicated stage but did not manage to do it (fixed with https://issues.jenkins-ci.org/browse/JENKINS-38153 ?) */
     stage('BURGR: build start') {
       agent {
         node {
@@ -31,6 +33,7 @@ pipeline {
         }
       }
     }
+    /* END */
     stage('Build') {
       failFast true
       parallel {
@@ -106,6 +109,22 @@ pipeline {
       }
       /* END */
     }
+    /* START */
+    /* Must not be in a dedicated stage but did not manage to do it (fixed with https://issues.jenkins-ci.org/browse/JENKINS-38153 ?) */
+    stage('BURGR: qa start') {
+      agent {
+        node {
+          label 'linux'
+        }
+      }
+      steps {
+        dir(path: 'burgr-notifications-files') {
+          sh './change-step-burgr.sh QA qa started'
+          sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+        }
+      }
+    }
+    /* END */
     stage('QA') {
       parallel {
         stage('Gradle') {
