@@ -16,18 +16,20 @@ read -r -a array <<< "$tmp"
 unset IFS
 git_owner="${array[1]}"
 git_project="${array[2]}"
-stage_status=$1
+burgr_step_name=${1}
+burgr_step_type=${2}
+burgr_step_status=${3}
 
 cp step-burgr.json step-burgr.tmp
 sed -i "s|@@GIT_OWNER@@|${git_owner}|g" step-burgr.tmp
 sed -i "s|@@GIT_PROJECT@@|${git_project}|g" step-burgr.tmp
 sed -i "s|@@BUILD_NUMBER@@|${BUILD_NUMBER}|g" step-burgr.tmp
 sed -i "s|@@BUILD_NUMBER@@|${BUILD_NUMBER}|g" step-burgr.tmp
-sed -i "s|@@STAGE_NAME@@|${STAGE_NAME}|g" step-burgr.tmp
-sed -i "s|@@STAGE_NAME@@|${STAGE_NAME}|g" step-burgr.tmp
+sed -i "s|@@BURGR_STEP_NAME@@|${burgr_step_name}|g" step-burgr.tmp
+sed -i "s|@@BURGR_STEP_TYPE@@|${burgr_step_type}|g" step-burgr.tmp
 sed -i "s|@@GIT_BRANCH@@|${GIT_BRANCH}|g" step-burgr.tmp
 sed -i "s|@@GIT_COMMIT@@|${GIT_COMMIT}|g" step-burgr.tmp
 sed -i "s|@@BUILD_URL@@|${BUILD_URL}|g" step-burgr.tmp
-sed -i "s|@@STAGE_STATUS@@|${stage_status}|g" step-burgr.tmp
+sed -i "s|@@BURGR_STEP_STATUS@@|${burgr_step_status}|g" step-burgr.tmp
 sed -i "s|@@TIMESTAMP@@|${timestamp}|g" step-burgr.tmp
 sed -i "s|@@TIMESTAMP@@|${timestamp}|g" step-burgr.tmp

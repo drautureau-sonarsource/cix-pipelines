@@ -1,7 +1,7 @@
 pipeline {
   agent none
   stages {
-    stage('GitHub to BURGR') {
+    stage('BURGR: GitHub (fake)') {
       agent {
         node {
           label 'linux'
@@ -15,15 +15,22 @@ pipeline {
         }
       }
     }
+    stage('BURGR: build start') {
+      agent {
+        node {
+          label 'linux'
+        }
+      }
+      steps {
+        dir(path: 'burgr-notifications-files') {
+          sh 'env'
+          sh './change-step-burgr.sh Build build started'
+          sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
+        }
+      }
+    }
     stage('Build') {
       failFast true
-      //steps {
-        //dir(path: 'burgr-notifications-files') {
-          //sh 'env'
-          //sh './change-step-burgr.sh started'
-          //sh 'curl -X POST -d @step-burgr.tmp --header "Content-Type:application/json" http://burgr:8090/api/stage'
-        //}
-      //}
       parallel {
         stage('Gradle') {
           agent {
